@@ -15,11 +15,14 @@ COPY crontab.txt ./
 # Damos permisos de ejecución
 RUN chmod +x run.sh
 
-# Instalamos dependencias (aunque en este caso no hay)
+# Instalamos dependencias
 RUN npm install
 
-# Registramos la tarea de cron
+# Registramos tareas de cron
 RUN crontab crontab.txt
+
+# Creamos directorio de logs
+RUN mkdir -p /usr/src/app/logs
 
 # Arrancamos cron en primer plano
 CMD ["cron", "-f"]

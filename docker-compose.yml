@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: cron-app
+    volumes:
+      - ./logs:/usr/src/app/logs    # Volumen para persistir los logs fuera del contenedor
+    environment:
+      - TZ=America/Mexico_City      # Configuración de la zona horaria (ajusta según tu región)
+    restart: unless-stopped         # Si el contenedor falla, se reinicia
+    command: ["cron", "-f"]         # Arranca cron en primer plano (evita que el contenedor se cierre)
+    
+  # Opcional: Puedes agregar un servicio de base de datos si es necesario (como MariaDB, PostgreSQL)
+  # db:
+  #   image: mariadb:latest
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #     MYSQL_DATABASE: appdb
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   networks:
+  #     - app_network
+
+# Volúmenes persistentes
+volumes:
+  db_data:
